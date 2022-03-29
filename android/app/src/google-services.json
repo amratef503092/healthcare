@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "367673366473",
+    "project_id": "healthcare-22920",
+    "storage_bucket": "healthcare-22920.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:367673366473:android:5874e650552344363aba18",
+        "android_client_info": {
+          "package_name": "com.example.helthcare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "367673366473-91b9nh7gv2sui23di7u7luogtft9am15.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.helthcare",
+            "certificate_hash": "41eaa4b8d357f5f4aa8f1d33af4e25db8754bd55"
+          }
+        },
+        {
+          "client_id": "367673366473-0c1hfmjgnk6v9e006iq05gf9c2104ut4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJGXU69QTCWcnVt4B7VDLzhiB3lg4G1C4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "367673366473-0c1hfmjgnk6v9e006iq05gf9c2104ut4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
