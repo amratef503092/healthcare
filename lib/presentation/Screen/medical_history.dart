@@ -44,6 +44,7 @@ class MedicalHistory extends StatelessWidget {
                     child: ListView.separated(itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: (){
+                         cubit.doctorNameId= cubit.doctor[index];
                           cubit.getDoctorDataHistory(cubit.doctor[index]).then((value) {
                             cubit.getQualifications(cubit.doctor[index]);
                             Navigator.push(context, MaterialPageRoute(builder: (context)=>

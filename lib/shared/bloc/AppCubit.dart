@@ -23,6 +23,7 @@ class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(initialState());
 
   static AppCubit get(context) => BlocProvider.of(context);
+  String ? doctorNameId;
   int index = 0;
   UserModel? userModel;
   String? currentUser;
