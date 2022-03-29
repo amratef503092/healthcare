@@ -23,17 +23,30 @@ class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(initialState());
 
   static AppCubit get(context) => BlocProvider.of(context);
-
+  int index = 0;
   UserModel? userModel;
   String? currentUser;
   String? date;
   String? selectedValue2;
-
+  var addressControllerEdit = TextEditingController();
+  var phoneNumberControllerEdit = TextEditingController();
+  var emergencyNumberEdit= TextEditingController();
 
   List<String> doctorQualification = [];
   List<String> doctorName = [];
   String ?userNameP ;
 
+  Future<void>updateDate() async{
+    var updateData= await FirebaseFirestore.instance.collection('user').doc(currentUser).collection('UserInfo').doc(currentUser).update(
+      {
+        'Phone Number' : phoneNumberControllerEdit.text,
+        'Emergency Number' : emergencyNumberEdit.text,
+        'Address' :addressControllerEdit.text,
+      }
+    );
+
+
+}
   void getDate(value) {
     date =  DateFormat('yyyy-MM-dd').format(value);
 
@@ -42,16 +55,16 @@ class AppCubit extends Cubit<AppStates> {
   
   Future<void> createUser(
       {required String userName,
-      required String password,
-      required String fullName,
-      required String date,
-      required String phoneNumber,
-      required String emergencyNumber,
-      required String bloodType,
-      required String address,
-      required String id,
-      required String gender,
-      required String emailAddress}) async {
+      required  String password,
+      required  String fullName,
+      required  String date,
+      required  String phoneNumber,
+      required  String emergencyNumber,
+      required  String bloodType,
+      required  String address,
+      required  String id,
+      required  String gender,
+      required  String emailAddress}) async {
     UserInfo userInfo = UserInfo(
         fullName: fullName,
         address: address,
@@ -79,7 +92,7 @@ class AppCubit extends Cubit<AppStates> {
         //   message: TextManager.messageCreateUserSuccessful,
         // );
 
-        await FirebaseFirestore.instance.collection('user').doc(userName).collection('UserInfo').add(userInfo.toMap());
+        await FirebaseFirestore.instance.collection('user').doc(userName).collection('UserInfo').doc(userName).set(userInfo.toMap());
         print(userInfo.toMap());
         emit(CreateUserSuccessful());
       });

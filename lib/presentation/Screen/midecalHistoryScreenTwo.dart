@@ -12,7 +12,7 @@ import '../../shared/bloc/AppStates.dart';
 import '../resources/assets/assetclass.dart';
 import '../resources/text_manager.dart';
 class MedicalHistoryScreenTwo extends StatefulWidget {
-  final int ?index;
+   int ? index;
    MedicalHistoryScreenTwo( {this.index});
 
   @override
@@ -84,7 +84,7 @@ class _MedicalHistoryScreenTwoState extends State<MedicalHistoryScreenTwo> {
                 ),
 
                 MaterialButton(onPressed: () async {
-                  // Navigator.push(context, MaterialPageRoute(builder: (context)=>Pdf(index)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Pdf()));
                 } ,
                   height: 56,
                   minWidth: screenWidth*.8,
@@ -92,18 +92,18 @@ class _MedicalHistoryScreenTwoState extends State<MedicalHistoryScreenTwo> {
                   shape:  RoundedRectangleBorder(borderRadius:BorderRadius.circular(28.0), ),
                   child:  Text(TextManager.downloadFiles),
                 ),
-                SizedBox(height: screenHeight*0.3,),
-                MaterialButton(onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>
-                      MedicalHistoryScreenThree(),
-                  ));
-                } ,
-                  height: 56,
-                  minWidth: screenWidth*.5,
-                  color: Colors.white.withOpacity(0.7),
-                  shape:  RoundedRectangleBorder(borderRadius:BorderRadius.circular(28.0), ),
-                  child: Text(TextManager.next),
-                ),
+                // SizedBox(height: screenHeight*0.3,),
+                // MaterialButton(onPressed: (){
+                //   Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                //       MedicalHistoryScreenThree(),
+                //   ));
+                // } ,
+                //   height: 56,
+                //   minWidth: screenWidth*.5,
+                //   color: Colors.white.withOpacity(0.7),
+                //   shape:  RoundedRectangleBorder(borderRadius:BorderRadius.circular(28.0), ),
+                //   child: Text(TextManager.next),
+                // ),
 
               ],
             ),

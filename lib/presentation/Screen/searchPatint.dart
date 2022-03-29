@@ -47,11 +47,6 @@ class _SearchPatientState extends State<SearchPatient> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    NavigatorWidget(
-                      function: () {
-                        Navigator.pop(context);
-                      },
-                    ),
                     Form(
                       key: formKey,
                       child: Padding(

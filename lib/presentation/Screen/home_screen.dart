@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helthcare/model/Hospital_info_Model.dart';
+import 'package:helthcare/presentation/Screen/LoginScreen.dart';
 import 'package:helthcare/presentation/Screen/Medical_History_Screen_Three.dart';
 import 'package:helthcare/presentation/Screen/profile_screen.dart';
 import 'package:helthcare/presentation/Screen/userInfo.dart';
@@ -79,13 +80,18 @@ class HomeScreen extends StatelessWidget {
                       coloBorder: Color(0xff707070),
                       fontSize: AppSize.s28,
                       colorText: Colors.black,
-                      function: () {},
+                      function: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginScreen()));
+                      },
                       text: TextManager.logOut),
                 ],
               ),
             ),
             body: Container(
-              width: double.infinity,
+                width: double.infinity,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage(AssetsManager.homeBackGround),
@@ -94,7 +100,8 @@ class HomeScreen extends StatelessWidget {
                 ),
                 child: Stack(
                   children: [
-                    IconHomePage(width: screenWidth,
+                    IconHomePage(
+                      width: screenWidth,
                       function: () {
                         _key.currentState?.openDrawer();
                       },
@@ -103,7 +110,8 @@ class HomeScreen extends StatelessWidget {
                       right: 30,
                       top: 40,
                     ),
-                    IconHomePage(width: screenWidth,
+                    IconHomePage(
+                      width: screenWidth,
                       function: () {
                         Navigator.push(
                             context,
@@ -115,7 +123,8 @@ class HomeScreen extends StatelessWidget {
                       image: AssetsManager.nfcScan,
                       text: TextManager.nfcScan,
                     ),
-                    IconHomePage(width: screenWidth,
+                    IconHomePage(
+                      width: screenWidth,
                       function: () {
                         Navigator.push(
                             context,
@@ -153,25 +162,29 @@ class HomeScreen extends StatelessWidget {
                       width: screenWidth,
                       function: () async {
                         await cubit.getDoctorInfo();
-                        if(cubit.doctorInfoModel.isNotEmpty){
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>DoctorInfo()));
+                        if (cubit.doctorInfoModel.isNotEmpty) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DoctorInfo()));
                         }
                       },
                       right: 30,
                       top: 470,
                       image: AssetsManager.doctor,
                       text: TextManager.doctorInfo,
-
                     ),
                     IconHomePage(
                       width: screenWidth,
-                      function: ()  {
+                      function: () {
                         cubit.getDoctorInfo();
                         cubit.getDoctorHistory().whenComplete(() {
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>MedicalHistory()));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MedicalHistory()));
                         });
-
-                        },
+                      },
                       left: 27,
                       top: 600,
                       image: AssetsManager.medicalHistory,

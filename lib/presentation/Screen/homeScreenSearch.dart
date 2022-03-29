@@ -7,6 +7,7 @@ import '../../shared/bloc/AppStates.dart';
 import '../resources/assets/assetclass.dart';
 import '../resources/text_manager.dart';
 import '../resources/value_manager.dart';
+import 'EditInfo.dart';
 import 'addDoctorScreen.dart';
 import 'medical add.dart';
 
@@ -102,7 +103,14 @@ class _HomeScreenSearchState extends State<HomeScreenSearch> {
                          fontSize: AppSize.s28,
                          colorText: Colors.black,
                          function: () {
-
+                           cubit.getUserInfo(cubit.currentUser.toString()).then((value) {
+                             cubit.addressControllerEdit.text = cubit.userInfo!.address;
+                             cubit.phoneNumberControllerEdit.text = cubit.userInfo!.phoneNumber;
+                             cubit.emergencyNumberEdit.text = cubit.userInfo!.emergencyNumber;
+                           });
+                           Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                           const EditInfo()
+                           ));
                          },
                          text: 'Edit info'),
                      SizedBox(

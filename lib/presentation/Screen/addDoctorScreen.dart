@@ -142,10 +142,15 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
             width: screenWidth*.8,
             text: "Next",
             function: () async {
-              await cubit.getDoctorName(selectedValue!);
-              Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                  AddDoctorScreen2()
-              ));
+              if(selectedValue != null) {
+                await cubit.getDoctorName(selectedValue!);
+                Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                    AddDoctorScreen2()
+                ));
+              }else{
+                showToastFlutter(message: 'Select Doctor qualification',color: Colors.red
+                );
+              }
 
 
             },

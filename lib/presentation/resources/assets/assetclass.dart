@@ -22,5 +22,6 @@ class AssetsManager{
   static const  String backGroundDoctorInfo= '$path/DocotorInfo.png';
   static const  String backGroundMedical= '$path/medicalBackGround.png';
   static const  String searchButton= '$path/searchButton.png';
+  static const  String logo= '$path/hospitall Logo.png';
 
 }

@@ -117,12 +117,10 @@ class _AddDoctorScreen2State extends State<AddDoctorScreen2> {
                     ))
                     .toList(),
                 value: selectedValue2 ,
-
                 onChanged: (value) {
                   setState(() {
                   selectedValue2 = value as String;
                   });
-
                 },
                 buttonHeight: 40,
                 buttonWidth: 140,
@@ -135,11 +133,18 @@ class _AddDoctorScreen2State extends State<AddDoctorScreen2> {
                     width: screenWidth*.8,
                     text: "Next",
                     function: (){
-                      cubit.selectedValue2 = selectedValue2;
-                      Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                          ScreenDoctorThree()
-                      ));
-                      print(cubit.selectedValue2);
+                      if(selectedValue2 != null) {
+                        cubit.selectedValue2 = selectedValue2;
+                        Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                            ScreenDoctorThree()
+                        ));
+
+                        print(cubit.selectedValue2);
+                      }else{
+                        showToastFlutter(message: 'Select Doctor Name Please',color: Colors.red
+                        );
+                      }
+
 
                     },
                     colorText: Colors.black,

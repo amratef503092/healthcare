@@ -43,7 +43,7 @@ class Medical extends StatelessWidget {
                       child: ListView.separated(itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: (){
-
+                            cubit.index = index;
                             Navigator.push(context, MaterialPageRoute(builder: (context)=>
                                 MedicalHistoryScreenTwo(index: index) ));
 

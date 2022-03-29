@@ -73,9 +73,7 @@ class NFCScanScreenState extends State<NFCScanScreen> {
 
   void _tagRead() {
     NfcManager.instance.startSession(onDiscovered: (NfcTag tag ) async {
-
-      result.value =  tag.data.;
-
+      result.value =  tag.data;
       NfcManager.instance.stopSession();
     });
   }
