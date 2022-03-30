@@ -114,9 +114,8 @@ class HomeScreen extends StatelessWidget {
                       width: screenWidth,
                       function: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => MyApp()));
+                            context,MaterialPageRoute(
+                                builder: (context) => NFCScan()));
                       },
                       left: 20,
                       top: 58,
