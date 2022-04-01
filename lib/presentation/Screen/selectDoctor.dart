@@ -56,7 +56,6 @@ class _AddDoctorScreen2State extends State<AddDoctorScreen2> {
               Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
-                width: screenWidth*.7,
                 height: screenHeight*.1,
                 decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.83),
@@ -122,9 +121,7 @@ class _AddDoctorScreen2State extends State<AddDoctorScreen2> {
                   selectedValue2 = value as String;
                   });
                 },
-                buttonHeight: 40,
-                buttonWidth: 140,
-                itemHeight: 40,
+
               ),
             ),
             ),))],),),

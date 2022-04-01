@@ -1,19 +1,23 @@
+
 import 'package:age_calculator/age_calculator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:helthcare/model/medicalHistory_Model.dart';
 import 'package:helthcare/model/user_info.dart';
 import 'package:helthcare/presentation/resources/text_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:ndef/ndef.dart' as ndef;
 
 import '../../constant/constants.dart';
 import '../../model/Hospital_info_Model.dart';
 import '../../model/doctorInfoModel.dart';
 import '../../model/user_model.dart';
+import '../../presentation/Screen/addDoctorScreen.dart';
 import '../../presentation/Screen/adminScreen.dart';
 import '../../presentation/Screen/homeScreenSearch.dart';
 import '../../presentation/Screen/home_screen.dart';
@@ -23,6 +27,7 @@ class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(initialState());
 
   static AppCubit get(context) => BlocProvider.of(context);
+
   String ? doctorNameId;
   int index = 0;
   UserModel? userModel;
@@ -65,7 +70,10 @@ class AppCubit extends Cubit<AppStates> {
       required  String address,
       required  String id,
       required  String gender,
-      required  String emailAddress}) async {
+      required  String emailAddress,
+        context
+      }) async {
+    bool show= false;
     UserInfo userInfo = UserInfo(
         fullName: fullName,
         address: address,
@@ -79,72 +87,179 @@ class AppCubit extends Cubit<AppStates> {
         photo: "https://cdn1.vectorstock.com/i/thumb-large/22/05/male-profile-picture-vector-1862205.jpg",
         gender: gender,
         hospitalInfo: 'Dar Al Hekma Hospital');
-    userNameP = userName;
     var doc =
         await FirebaseFirestore.instance.collection('user').doc(userName).get();
 
     if (!doc.exists) {
-      await FirebaseFirestore.instance.collection('user').doc(userName).set({
-        "useName": userName,
-        "password": password,
-      }).then((value) async {
-        // showToastFlutter(
-        //   color: Colors.blue,
-        //   message: TextManager.messageCreateUserSuccessful,
-        // );
 
-        await FirebaseFirestore.instance.collection('user').doc(userName).collection('UserInfo').doc(userName).set(userInfo.toMap());
-        print(userInfo.toMap());
-        emit(CreateUserSuccessful());
-      });
-    } else {
+      String ? nfc ;
+      bool wirteNFC = false;
+      Alert(
+        context: context,
+        type: AlertType.info,
+        title:  "write the ID in Nfc  $userName",
+        buttons: [
+          DialogButton(
+            child: const Text(
+              "Write ID",
+              style: TextStyle(color: Colors.white, fontSize: 10),
+            ),
+            onPressed: () async{
+              var tag = await FlutterNfcKit.poll(
+                  timeout: Duration(seconds: 10),
+                  iosMultipleTagMessage: "Multiple tags found!",
+                  iosAlertMessage: "Scan your tag");
+              if (tag.ndefWritable!) {
+                await FlutterNfcKit.writeNDEFRecords(
+                    [ ndef.TextRecord(text: userName, language: 'en')]);
+                wirteNFC = true;
+
+              }
+            },
+          ),
+    DialogButton(
+    child: const Text(
+    "NFC read",
+    style: TextStyle(color: Colors.white, fontSize: 10),
+    ),
+    onPressed: () async{
+      if(wirteNFC){
+        var tag = await FlutterNfcKit.poll(timeout: Duration(seconds: 10));
+
+        if (tag.ndefAvailable) {
+          for (var record in await FlutterNfcKit.readNDEFRecords(cached: false)) {
+            print(record.toString());
+            nfc = record.toString().substring(105, record.toString().length);
+          }
+          showToastFlutter(
+            color: Colors.red,
+            message: 'your id is $nfc',
+          );
+          show = true;
+        }
+      }else{
+        showToastFlutter(
+          color: Colors.red,
+          message: 'Write Id in NFC First',
+        );
+
+      }
+
+    },
+    ),
+           DialogButton(
+            child: const Text(
+              "booked doctor",
+              style: TextStyle(color: Colors.white, fontSize: 10),
+            ),
+            onPressed: () async{
+              if(show){
+                await FirebaseFirestore.instance.collection('user').doc(userName).set({
+                  "useName": userName,
+                  "password": password,
+                }).then((value)  async{
+                  userNameP = userName;
+                  await FirebaseFirestore.instance.collection('user').doc(userName).collection('UserInfo').doc(userName).set(userInfo.toMap());
+                  print(userInfo.toMap());
+                  getDoctorQualifications().then((value) => Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                      AddDoctorScreen()
+                  )));
+                  emit(CreateUserSuccessful());
+                });
+
+              }
+              else{
+                showToastFlutter(
+                  color: Colors.red,
+                  message: 'please test First',
+                );
+
+              }
+            }
+
+          )
+
+    ],
+      ).show();
+
+      // await FirebaseFirestore.instance.collection('user').doc(userName).set({
+      //   "useName": userName,
+      //   "password": password,
+      // }).then((value)  async{
+      //   userNameP = userName;
+      //   await FirebaseFirestore.instance.collection('user').doc(userName).collection('UserInfo').doc(userName).set(userInfo.toMap());
+      //   print(userInfo.toMap());
+      //   getDoctorQualifications().then((value) => Navigator.push(context, MaterialPageRoute(builder: (context)=>
+      //       AddDoctorScreen()
+      //   )));
+      //   emit(CreateUserSuccessful());
+      // });
+
+          // raw NDEF records
+        }
+
+        else {
       showToastFlutter(
         color: Colors.red,
-        message: TextManager.userISExists,
+        message: 'íd is exist',
       );
       emit(CreateUserError());
 
     }
 
   }
-  UserInfo ? userInfo2 ;
+  List < UserInfo> userInfo2  = [];
   Future<void>findUser({required String id ,context}) async {
-    var userCollection = await FirebaseFirestore.instance.collection('user').doc(id).get();
-    if(userCollection.exists) {
-      var date  = await FirebaseFirestore.instance.collection('user').doc(id).collection('UserInfo').get();
-      for (var element in date.docs) {
-        userInfo2 = UserInfo.fromJson(element.data());
-      }
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => HomeScreenSearch()));
-      currentUser = id;
-      userNameP = id;
-      print(userInfo2!.emergencyNumber);
-      emit(FoundId());
-      
-    }else{
-      Alert(
-        context: context,
-        type: AlertType.error,
-        title: "Not Found",
-        buttons: [
-          DialogButton(
-            child: const Text(
-              "Back",
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            width: 120,
-          )
-        ],
-      ).show();
-      emit(NotFound());
+     await FirebaseFirestore.instance.collection('user').doc(id).get().then((value) async {
+      userInfo2  = [];
+      await  FirebaseFirestore.instance.collection('user').doc(id).collection('UserInfo').doc(id).get().then((value)  {
+         userInfo2.add(UserInfo.fromJson(value.data()!));
+        currentUser = id;
+        userNameP = id;
+        print(userInfo2[0].emergencyNumber);
 
-    }
+        emit(FoundId());
+      });
+    }).catchError((e){
+       Alert(
+         context: context,
+         type: AlertType.error,
+         title: "Not Found",
+         buttons: [
+           DialogButton(
+             child: const Text(
+               "Back",
+               style: TextStyle(color: Colors.white, fontSize: 20),
+             ),
+             onPressed: () {
+               Navigator.pop(context);
+             },
+             width: 120,
+           )
+         ],
+       ).show();
+       emit(NotFound());
+     }).catchError((e){
+       Alert(
+         context: context,
+         type: AlertType.error,
+         title: "Not Found",
+         buttons: [
+           DialogButton(
+             child: const Text(
+               "Back",
+               style: TextStyle(color: Colors.white, fontSize: 20),
+             ),
+             onPressed: () {
+               Navigator.pop(context);
+             },
+             width: 120,
+           )
+         ],
+       ).show();
+       emit(NotFound());
+     });
+
 
   }
 

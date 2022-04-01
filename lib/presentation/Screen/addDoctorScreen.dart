@@ -57,7 +57,6 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
                 Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
-                      width: screenWidth*.7,
                       height: screenHeight*.1,
                       decoration: BoxDecoration(
                           color: Colors.white.withOpacity(0.83),
@@ -75,7 +74,7 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
                           child: DropdownButton2(
                             dropdownDecoration: BoxDecoration(
                                 color:  Colors.white.withOpacity(0.83),
-                                borderRadius: BorderRadius.only(
+                                borderRadius: const BorderRadius.only(
                                   bottomLeft: Radius.circular(30),
                                   bottomRight: Radius.circular(30),
                                 )
@@ -96,7 +95,7 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
                             hint: Text(
                               'Doctor qualification',
                               style: TextStyle(
-                                fontSize: 24,
+                                fontSize: 18,
                                 color: Theme
                                     .of(context)
                                     .hintColor,
@@ -124,9 +123,7 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
 
 
                             },
-                            buttonHeight: 40,
-                            buttonWidth: 140,
-                            itemHeight: 40,
+
                           ),
                         ),
                       ),

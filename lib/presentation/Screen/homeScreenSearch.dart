@@ -62,24 +62,24 @@ class _HomeScreenSearchState extends State<HomeScreenSearch> {
 
                         CircleAvatar(
                           radius: 50,
-                          backgroundImage: NetworkImage(cubit.userInfo2!.photo.toString()),
+                          backgroundImage: NetworkImage(cubit.userInfo2[0].photo.toString()),
                         ),
                         SizedBox(
                           width: 30,
                         ),
                         Column(
                           children: [
-                            Text(cubit.userInfo2!.fullName ,style: TextStyle(
+                            Text(cubit.userInfo2[0].fullName ,style: TextStyle(
                               color: Colors.white,
                               fontSize: 41,
                               fontWeight: FontWeight.bold
                             ),),
-                            Text(cubit.userInfo2!.dateTime.toString() ,style: TextStyle(
+                            Text(cubit.userInfo2[0].dateTime.toString() ,style: TextStyle(
                                 color: Colors.white,
                                 fontSize:32,
                                 fontWeight: FontWeight.bold
                             ),),
-                            Text(cubit.userInfo2!.id ,style: TextStyle(
+                            Text(cubit.userInfo2[0].id ,style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold

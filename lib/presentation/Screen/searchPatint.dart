@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 import 'package:helthcare/shared/bloc/AppCubit.dart';
 import 'package:helthcare/shared/bloc/AppStates.dart';
 
@@ -16,6 +17,7 @@ class SearchPatient extends StatefulWidget {
 class _SearchPatientState extends State<SearchPatient> {
   var formKey = GlobalKey<FormState>();
   var searchController = TextEditingController();
+  String ? nfc;
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -96,12 +98,46 @@ class _SearchPatientState extends State<SearchPatient> {
                          await cubit.findUser(
                           context: context,
                           id: searchController.text,
-                        );
+                        ).then((value) {
+                          if(cubit.userInfo2.isNotEmpty){
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HomeScreenSearch()));
+                          }
+
+                         });
 
                       },
                       text: "search",
                       width: width*0.4,
-                    )
+                    ),
+                    SizedBox(height: 20,),
+
+                    Button(
+                      height:height*0.1 ,
+                      colorText: Colors.white,
+                      colorButton: Color(0xff2A50BD),
+                      coloBorder: Color(0xff707070),
+                      fontSize: 18,
+                      function: () async{
+
+                          var tag = await FlutterNfcKit.poll(timeout: Duration(seconds: 10));
+
+                          if (tag.ndefAvailable) {
+                            for (var record in await FlutterNfcKit.readNDEFRecords(cached: false)) {
+                          print(record.toString());
+                          setState(() {
+                            searchController.text = record.toString().substring(105, record.toString().length);
+
+                          });
+                          }
+                          }
+
+                      },
+                      text: "NFC Read",
+                      width: width*0.4,
+                    ),
                   ],
                 ),
               )

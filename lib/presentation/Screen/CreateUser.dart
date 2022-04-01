@@ -347,12 +347,11 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
                     fullName: fullNameController.text,
                     password: passwordController.text,
                     userName: loginIDController.text,
-                  ).then((value) =>
-                    cubit.getDoctorQualifications().then((value) => Navigator.push(context, MaterialPageRoute(builder: (context)=>
-                       AddDoctorScreen()
-                   ))));}
+                     context: context
+                  );
 
 
+                }
                 },
 
 
