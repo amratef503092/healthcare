@@ -62,11 +62,13 @@ class MedicalHistory extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(cubit.doctor[index].toString() ,
-                                  style: TextStyle(
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold
-                                ),),
+                                FittedBox(
+                                  child: Text(cubit.doctor[index].toString() ,
+                                    style: TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold
+                                  ),),
+                                ),
 
                               ],
                             ),

@@ -160,7 +160,19 @@ class AppCubit extends Cubit<AppStates> {
           showToastFlutter(
             color: Colors.red,
             message: 'your id is $nfc',
-          );
+          ).then((value) async {
+            await FirebaseFirestore.instance.collection('user').doc(userName).set({
+              "useName": userName,
+              "password": password,
+            }).then((value)  async{
+              userNameP = userName;
+              await FirebaseFirestore.instance.collection('user').doc(userName).collection('UserInfo').doc(userName).set(userInfo.toMap());
+              print(userInfo.toMap());
+            });
+          }).then((value) {
+            emit(CreateUserSuccessful());
+
+          });
           show = true;
         }
       }else{
@@ -180,18 +192,11 @@ class AppCubit extends Cubit<AppStates> {
             ),
             onPressed: () async{
               if(show){
-                await FirebaseFirestore.instance.collection('user').doc(userName).set({
-                  "useName": userName,
-                  "password": password,
-                }).then((value)  async{
-                  userNameP = userName;
-                  await FirebaseFirestore.instance.collection('user').doc(userName).collection('UserInfo').doc(userName).set(userInfo.toMap());
-                  print(userInfo.toMap());
+
                   getDoctorQualifications().then((value) => Navigator.push(context, MaterialPageRoute(builder: (context)=>
                       AddDoctorScreen()
                   )));
-                  emit(CreateUserSuccessful());
-                });
+
 
               }
               else{

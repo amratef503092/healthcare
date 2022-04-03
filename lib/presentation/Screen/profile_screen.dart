@@ -44,117 +44,115 @@ bool x =false;
                   fit: BoxFit.cover,
                 ),
               ),
-              child: SizedBox(
-                width: screenWidth,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      NavigatorWidget(
-                        function: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HomeScreen()));
-                        },
-                      ),
-                      ProfileData(
-                        Image: NetworkImage(cupit.userInfo?.photo ??
-                            "https://cdn1.vectorstock.com/i/thumb-large/22/05/male-profile-picture-vector-1862205.jpg"),
-                        screenHeight: screenHeight,
-                        function: () {
-                          Alert(
-                            context: context,
-                            image: (x)?
-                             CircularProgressIndicator():   SizedBox(),
-                            title: "Upload  Image",
-                            buttons: [
-                              DialogButton(
-                                child: const Text(
-                                  "gallery",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20),
-                                ),
-                                onPressed: () {
-                                    cupit.pickImage(ImageSource.gallery).whenComplete(() async{
-                                      x= true;
-                                     await FirebaseFirestore.instance.collection('user').doc(cupit.currentUser).
-                                      collection('UserInfo').doc(cupit.currentUser).update({
-                                       'photo' :cupit.link
-                                      }).then((value) {
-                                        cupit.getUserInfo(cupit.currentUser.toString()).then((value) {
-                                          Navigator.pop(context);
-                                          x= false;
-
-                                        });
-                                     });
-
-                                      print(cupit.link);
-
-                                    }).catchError((e){
-                                      print("FuckWorld");
-
-                                    });
-                                }
-
-
-                              ),
-                              DialogButton(
-                                  child: const Text(
-                                    "camera",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20),
-                                  ),
-                                  onPressed: () {
-                                    cupit.pickImage(ImageSource.camera).whenComplete(() async{
-                                      x= true;
-
-                                      await FirebaseFirestore.instance.collection('user').doc(cupit.currentUser).
-                                      collection('UserInfo').doc(cupit.currentUser).update({
-                                        'photo' :cupit.link
-                                      }).then((value) {
-                                        cupit.getUserInfo(cupit.currentUser.toString()).then((value){
-                                          Navigator.pop(context);
-
-                                        }
-                                        );
-                                        x= false;
-
-                                      });
-
-                                      print(cupit.link);
-
-                                    }).catchError((e){
-
-                                    });
-                                  }
-
-
-                              ),
-
-
-
-                            ],
-                          ).show();
-                        },
-                        useName: cupit.userInfo?.fullName,
-                        email: cupit.userInfo?.emailAddres,
-                      ),
-                      SizedBox(
-                        height: screenHeight * .04,
-                      ),
-                      rowInformation(
-                          age: cupit.userInfo!.dateTime.toString(),
-                          blood: cupit.userInfo?.bloodTybe,
-                          gender: cupit.userInfo?.gender),
-                      Information(
-                        screenWidth: screenWidth,
-                        emergency: cupit.userInfo!.emergencyNumber.toString(),
-                        userInformation: TextManager.userInformation,
-                      ),
-                      userInfo(screenHeight: screenHeight, data: 'User Info'),
-                    ],
+              child: Column(
+                children: [
+                  NavigatorWidget(
+                    function: () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => HomeScreen()));
+                    },
                   ),
-                ),
+                  ProfileData(
+                    Image: NetworkImage(cupit.userInfo?.photo ??
+                        "https://cdn1.vectorstock.com/i/thumb-large/22/05/male-profile-picture-vector-1862205.jpg"),
+                    screenHeight: screenHeight,
+                    function: () {
+                      Alert(
+                        context: context,
+                        image: (x)?
+                         CircularProgressIndicator():   SizedBox(),
+                        title: "Upload  Image",
+                        buttons: [
+                          DialogButton(
+                            child: const Text(
+                              "gallery",
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 20),
+                            ),
+                            onPressed: () {
+                                cupit.pickImage(ImageSource.gallery).whenComplete(() async{
+                                  x= true;
+                                 await FirebaseFirestore.instance.collection('user').doc(cupit.currentUser).
+                                  collection('UserInfo').doc(cupit.currentUser).update({
+                                   'photo' :cupit.link
+                                  }).then((value) {
+                                    cupit.getUserInfo(cupit.currentUser.toString()).then((value) {
+                                      Navigator.pop(context);
+                                      x= false;
+
+                                    });
+                                 });
+
+                                  print(cupit.link);
+
+                                }).catchError((e){
+                                  print("FuckWorld");
+
+                                });
+                            }
+
+
+                          ),
+                          DialogButton(
+                              child: const Text(
+                                "camera",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20),
+                              ),
+                              onPressed: () {
+                                cupit.pickImage(ImageSource.camera).whenComplete(() async{
+                                  x= true;
+
+                                  await FirebaseFirestore.instance.collection('user').doc(cupit.currentUser).
+                                  collection('UserInfo').doc(cupit.currentUser).update({
+                                    'photo' :cupit.link
+                                  }).then((value) {
+                                    cupit.getUserInfo(cupit.currentUser.toString()).then((value){
+                                      Navigator.pop(context);
+
+                                    }
+                                    );
+                                    x= false;
+
+                                  });
+
+                                  print(cupit.link);
+
+                                }).catchError((e){
+
+                                });
+                              }
+
+
+                          ),
+
+
+
+                        ],
+                      ).show();
+                    },
+                    useName: cupit.userInfo?.fullName,
+                    email: cupit.userInfo?.emailAddres,
+                  ),
+                  SizedBox(
+                    height: screenHeight * .04,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: rowInformation(
+                        age: cupit.userInfo!.dateTime.toString(),
+                        blood: cupit.userInfo?.bloodTybe,
+                        gender: cupit.userInfo?.gender),
+                  ),
+                  Information(
+                    screenWidth: screenWidth,
+                    emergency: cupit.userInfo!.emergencyNumber.toString(),
+                    userInformation: TextManager.userInformation,
+                  ),
+                  userInfo(screenHeight: screenHeight, data: 'User Info'),
+                ],
               ),
             )),
           );

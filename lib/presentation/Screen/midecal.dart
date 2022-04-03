@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helthcare/shared/bloc/AppCubit.dart';
@@ -22,7 +23,6 @@ class Medical extends StatelessWidget {
 
       return   SafeArea(child: Scaffold(
           body: Container(
-            width: screenWidth,
             decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(AssetsManager.backGroundMedical),
@@ -63,16 +63,21 @@ class Medical extends StatelessWidget {
                                    children: [
                                      Text(cubit.medicalHistoryModel[index].conditions.toString() ,
                                        style: const TextStyle(
-                                           fontSize: 30,
                                            fontWeight: FontWeight.bold
                                        ),),
 
-                                     Text(cubit.medicalHistoryModel[index].date.toString() ,
+                                     AutoSizeText(cubit.medicalHistoryModel[index].date.toString() ,
                                        style: const TextStyle(
-                                           fontSize: 30,
-                                           fontWeight: FontWeight.bold
-                                       ),),
+                                           fontWeight: FontWeight.bold,
+                                       ),  maxLines: 2,
+                                       minFontSize: 14,
+                                       stepGranularity: 0.1,
+                                     ),
+
+
+
                                    ],
+
                                  )
 
                                 ],

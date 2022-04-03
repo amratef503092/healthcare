@@ -99,7 +99,7 @@ class _ScreenDoctorThreeState extends State<ScreenDoctorThree> {
                         children: [
                           Button(
                             height: screenHeight*.2,
-                            width: screenWidth*.8,
+
                             text: "Upload Photo",
                             function: () async {
 

@@ -204,68 +204,65 @@ class ProfileData extends StatelessWidget {
     );
   }
 }
-Padding rowInformation({String ? gender , String ?age , String ? blood}) {
-  return Padding(
-    padding:  const EdgeInsets.fromLTRB(78, 0, 78, 0),
-    child: IntrinsicHeight(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
+Widget rowInformation({String ? gender , String ?age , String ? blood}) {
+  return IntrinsicHeight(
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
 
-          Column(
-            children: [
-              Text(gender! , style: const TextStyle(
-                color: Colors.white,
-                fontSize: AppSize.s28,
-                fontWeight: FontWeight.bold,
-              ),) ,
-              const Text(TextManager.genderText , style: TextStyle(
-                color: Colors.blueGrey,
-                fontSize: AppSize.s12,
-                fontWeight: FontWeight.bold,
-              ),) ,
-            ],
-          ),
-          const VerticalDivider(
-            color: Colors.white,
-            width: 4,
-            thickness: 2,
-          ),
-          Column(
-            children: [
-              Text(age! , style: const TextStyle(
-                color: Colors.white,
-                fontSize: AppSize.s20,
-                fontWeight: FontWeight.bold,
-              ),) ,
-              const Text(TextManager.ageText , style: TextStyle(
-                color: Colors.blueGrey,
-                fontSize: AppSize.s12,
-                fontWeight: FontWeight.bold,
-              ),) ,
-            ],
-          ),
-          const VerticalDivider(
-            color: Colors.white,
-            thickness: 2,
-          ),
-          Column(
-            children: [
-              Text(blood!, style: const TextStyle(
-                color: Colors.white,
-                fontSize: AppSize.s28,
-                fontWeight: FontWeight.bold,
-              ),) ,
-              const Text(TextManager.bloodText , style: TextStyle(
-                color: Colors.blueGrey,
-                fontSize: AppSize.s12,
-                fontWeight: FontWeight.bold,
-              ),) ,
-            ],
-          ),
+        Column(
+          children: [
+            Text(gender! , style: const TextStyle(
+              color: Colors.white,
+              fontSize: AppSize.s28,
+              fontWeight: FontWeight.bold,
+            ),) ,
+            const Text(TextManager.genderText , style: TextStyle(
+              color: Colors.blueGrey,
+              fontSize: AppSize.s12,
+              fontWeight: FontWeight.bold,
+            ),) ,
+          ],
+        ),
+        const VerticalDivider(
+          color: Colors.white,
+          width: 4,
+          thickness: 2,
+        ),
+        Column(
+          children: [
+            Text(age! , style: const TextStyle(
+              color: Colors.white,
+              fontSize: AppSize.s20,
+              fontWeight: FontWeight.bold,
+            ),) ,
+            const Text(TextManager.ageText , style: TextStyle(
+              color: Colors.blueGrey,
+              fontSize: AppSize.s12,
+              fontWeight: FontWeight.bold,
+            ),) ,
+          ],
+        ),
+        const VerticalDivider(
+          color: Colors.white,
+          thickness: 2,
+        ),
+        Column(
+          children: [
+            Text(blood!, style: const TextStyle(
+              color: Colors.white,
+              fontSize: AppSize.s28,
+              fontWeight: FontWeight.bold,
+            ),) ,
+            const Text(TextManager.bloodText , style: TextStyle(
+              color: Colors.blueGrey,
+              fontSize: AppSize.s12,
+              fontWeight: FontWeight.bold,
+            ),) ,
+          ],
+        ),
 
-        ],
-      ),
+      ],
     ),
   );
 }
@@ -316,29 +313,29 @@ Column Information({required double screenWidth , required String emergency , re
   );
 }
 
-Padding userInfo({required double screenHeight  , required String data}) {
-  return Padding(
-    padding:  const EdgeInsets.fromLTRB(41.0,0,41,0),
-    child: Container(
-      width: double.infinity,
-      height: screenHeight*.3,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
-          border: Border.all(
-              style: BorderStyle.solid, color: Colors.white)),
-      child: ListView(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Text(data ,style:TextStyle(
-                fontSize: AppSize.s24,
-                color: Colors.white,
-                fontWeight: FontWeight.bold
-            ),),
-          ),
-        ],
-      ),
+ userInfo({required double screenHeight  , required String data}) {
+  return Expanded(
+    child: Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(30),
+            border: Border.all(
+                style: BorderStyle.solid, color: Colors.white)),
+        child: ListView(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Text(data ,style:TextStyle(
+                  fontSize: AppSize.s24,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold
+              ),),
+            ),
+          ],
+        ),
 
+      ),
     ),
   );
 }
