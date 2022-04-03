@@ -1,15 +1,21 @@
 
+import 'dart:io';
+
 import 'package:age_calculator/age_calculator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:helthcare/model/medicalHistory_Model.dart';
 import 'package:helthcare/model/user_info.dart';
 import 'package:helthcare/presentation/resources/text_manager.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:path/path.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:ndef/ndef.dart' as ndef;
 
@@ -41,7 +47,8 @@ class AppCubit extends Cubit<AppStates> {
   List<String> doctorQualification = [];
   List<String> doctorName = [];
   String ?userNameP ;
-
+  File  ? image;
+  String ? link;
   Future<void>updateDate() async{
     var updateData= await FirebaseFirestore.instance.collection('user').doc(currentUser).collection('UserInfo').doc(currentUser).update(
       {
@@ -58,7 +65,26 @@ class AppCubit extends Cubit<AppStates> {
 
     emit(DatePiker());
   }
-  
+  Future pickImage(ImageSource imageSource) async {
+    try {
+      final image = await ImagePicker().pickImage(source: imageSource);
+
+      if (image == null) {
+        return;
+      } else {
+        final fileImage = File(image.path);
+        String imageName = basename(image.path);
+        var uploadImage = FirebaseStorage.instance.ref('user').child(currentUser!).child('profileImage').child(imageName);
+        await uploadImage.putFile(fileImage);
+        link = await uploadImage.getDownloadURL();
+        print("Link");
+      }
+    } on PlatformException catch (e) {
+      print('$e');
+    }
+  }
+
+
   Future<void> createUser(
       {required String userName,
       required  String password,
@@ -147,7 +173,7 @@ class AppCubit extends Cubit<AppStates> {
 
     },
     ),
-           DialogButton(
+          DialogButton(
             child: const Text(
               "booked doctor",
               style: TextStyle(color: Colors.white, fontSize: 10),
