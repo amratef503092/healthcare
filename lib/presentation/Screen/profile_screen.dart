@@ -151,7 +151,6 @@ bool x =false;
                     emergency: cupit.userInfo!.emergencyNumber.toString(),
                     userInformation: TextManager.userInformation,
                   ),
-                  userInfo(screenHeight: screenHeight, data: 'User Info'),
                 ],
               ),
             )),
