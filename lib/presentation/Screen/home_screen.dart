@@ -36,10 +36,10 @@ class HomeScreen extends StatelessWidget {
             key: _key,
             drawer: Drawer(
               backgroundColor: const Color(0xff0D2044),
-              child: Column(
+              child: ListView(
                 children: [
-                  const SizedBox(
-                    height: 30,
+                   SizedBox(
+                    height:(isLand(context))?  screenWidth*.02 : screenWidth*.02,
                   ),
                   NavigatorWidget(
                     function: () {
@@ -98,99 +98,110 @@ class HomeScreen extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                 ),
-                child: Stack(
-                  children: [
-                    IconHomePage(
-                      width: screenWidth,
-                      function: () {
-                        _key.currentState?.openDrawer();
-                      },
-                      image: AssetsManager.profile,
-                      text: '',
-                      right: 30,
-                      top: 40,
-                    ),
-                    IconHomePage(
-                      width: screenWidth,
-                      function: () {
-                        Navigator.push(
-                            context,MaterialPageRoute(
-                                builder: (context) => NFCScan()));
-                      },
-                      left: 20,
-                      top: 58,
-                      image: AssetsManager.nfcScan,
-                      text: TextManager.nfcScan,
-                    ),
-                    IconHomePage(
-                      width: screenWidth,
-                      function: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => UserInfo()));
-                      },
-                      top: 200,
-                      right: 30,
-                      image: AssetsManager.Logo1,
-                      text: TextManager.userInfo,
-                    ),
-                    IconHomePage(
-                      width: screenWidth,
-                      function: () {
-                        if (cubit.hospitalInfoModel != null) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HospitalInfo()));
-                        } else {
-                          cubit.getHospitalInformation().then((value) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => HospitalInfo()));
-                          });
-                        }
-                      },
-                      left: 20,
-                      top: 330,
-                      image: AssetsManager.hospital,
-                      text: TextManager.hospitalInfo,
-                    ),
-                    IconHomePage(
-                      width: screenWidth,
-                      function: () async {
-                        await cubit.getDoctorInfo();
-                        if (cubit.doctorInfoModel.isNotEmpty) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => DoctorInfo()));
-                        }
-                      },
-                      right: 30,
-                      top: 470,
-                      image: AssetsManager.doctor,
-                      text: TextManager.doctorInfo,
-                    ),
-                    IconHomePage(
-                      width: screenWidth,
-                      function: () {
-                        cubit.getDoctorInfo();
-                        cubit.getDoctorHistory().whenComplete(() {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MedicalHistory()));
-                        });
-                      },
-                      left: 27,
-                      top: 600,
-                      image: AssetsManager.medicalHistory,
-                      text: TextManager.medicalHistory,
-                    ),
-                  ],
-                )));
+                child:LayoutBuilder(
+                  builder: (context, constraints) {
+                    return  SingleChildScrollView(
+                      child: Container(
+                        height: (isLand(context)) ? constraints.minWidth :constraints.maxHeight,
+                        child: Stack(
+                          children: [
+                            IconHomePage(
+                              width: screenWidth,
+                              function: () {
+                                _key.currentState?.openDrawer();
+                              },
+                              image: AssetsManager.profile,
+                              text: '',
+                              right: 30,
+                              top: 40,
+                            ),
+
+                            IconHomePage(
+                              width: screenWidth,
+                              function: () {
+                                Navigator.push(
+                                    context,MaterialPageRoute(
+                                    builder: (context) => NFCScan()));
+                              },
+                              left: 20,
+                              top: 58,
+                              image: AssetsManager.nfcScan,
+                              text: TextManager.nfcScan,
+                            ),
+                            IconHomePage(
+                              width: screenWidth,
+                              function: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => UserInfo()));
+                              },
+                              top: 200,
+                              right: 30,
+                              image: AssetsManager.Logo1,
+                              text: TextManager.userInfo,
+                            ),
+                            IconHomePage(
+                              width: screenWidth,
+                              function: () {
+                                if (cubit.hospitalInfoModel != null) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => HospitalInfo()));
+                                } else {
+                                  cubit.getHospitalInformation().then((value) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => HospitalInfo()));
+                                  });
+                                }
+                              },
+                              left: 20,
+                              top: 330,
+                              image: AssetsManager.hospital,
+                              text: TextManager.hospitalInfo,
+                            ),
+                            IconHomePage(
+                              width: screenWidth,
+                              function: () async {
+                                await cubit.getDoctorInfo();
+                                if (cubit.doctorInfoModel.isNotEmpty) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => DoctorInfo()));
+                                }
+                              },
+                              right: 30,
+                              top: 470,
+                              image: AssetsManager.doctor,
+                              text: TextManager.doctorInfo,
+                            ),
+                            IconHomePage(
+                              width: screenWidth,
+                              function: () {
+                                cubit.getDoctorInfo();
+                                cubit.getDoctorHistory().whenComplete(() {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => MedicalHistory()));
+                                });
+                              },
+                              left: 27,
+                              top: 600,
+                              image: AssetsManager.medicalHistory,
+                              text: TextManager.medicalHistory,
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ))
+        );
       },
     );
   }

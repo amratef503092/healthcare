@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 import '../presentation/resources/color_manager.dart';
 import '../presentation/resources/style_manager.dart';
@@ -38,6 +39,10 @@ Widget textFormField({required TextEditingController controller,  String ?labelT
     obscureText: pass!,
   );
 }
+ bool isLand(context){
+  return  MediaQuery.of(context).orientation ==Orientation.landscape;
+
+}
 class Button extends StatelessWidget {
   Function ? function;
   String ? text ;
@@ -54,10 +59,9 @@ class Button extends StatelessWidget {
       onPressed: () {
         function!();
       },
-      child:  Text(text!, style: TextStyle(
-        color: colorText,
-        fontSize: fontSize ,
-      ),),
+      child:  AutoSizeText(text!, style: TextStyle(
+        color: colorText,fontSize: fontSize,
+      ),maxLines: 1,),
       style: ElevatedButton.styleFrom(
           primary: colorButton,
           fixedSize:  Size(width!, height!),

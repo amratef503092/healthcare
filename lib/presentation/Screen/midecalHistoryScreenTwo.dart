@@ -67,19 +67,21 @@ class _MedicalHistoryScreenTwoState extends State<MedicalHistoryScreenTwo> {
                     Navigator.pop(context);
                   },
                 ),
-                SizedBox(
-                  width: double.infinity,
-                  height: screenHeight*.4,
-                  child: ListView.builder(
-                    itemBuilder: (context, index) {
-                      return DataGet(
-                        dataText: list[index].dataText,
-                        text: list[index].text,
-                        screenHeight: screenHeight,
-                        screenWidth: screenWidth,
-                      );
-                    },
-                    itemCount: list.length,
+                SingleChildScrollView(
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: screenHeight*.4,
+                    child: ListView.builder(
+                      itemBuilder: (context, index) {
+                        return DataGet(
+                          dataText: list[index].dataText,
+                          text: list[index].text,
+                          screenHeight: screenHeight,
+                          screenWidth: screenWidth,
+                        );
+                      },
+                      itemCount: list.length,
+                    ),
                   ),
                 ),
 

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helthcare/presentation/Screen/splash_screen.dart';
 import 'package:helthcare/shared/bloc/AppCubit.dart';
 import 'package:helthcare/shared/bloc/bloc_ob_server.dart';
+import 'package:device_preview/device_preview.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
