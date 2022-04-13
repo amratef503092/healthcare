@@ -23,8 +23,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-
-bool x =false;
+  bool x = false;
 
   @override
   Widget build(BuildContext context) {
@@ -61,40 +60,41 @@ bool x =false;
                     function: () {
                       Alert(
                         context: context,
-                        image: (x)?
-                         CircularProgressIndicator():   SizedBox(),
+                        image: (x) ? CircularProgressIndicator() : SizedBox(),
                         title: "Upload  Image",
                         buttons: [
                           DialogButton(
-                            child: const Text(
-                              "gallery",
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 20),
-                            ),
-                            onPressed: () {
-                                cupit.pickImage(ImageSource.gallery).whenComplete(() async{
-                                  x= true;
-                                 await FirebaseFirestore.instance.collection('user').doc(cupit.currentUser).
-                                  collection('UserInfo').doc(cupit.currentUser).update({
-                                   'photo' :cupit.link
-                                  }).then((value) {
-                                    cupit.getUserInfo(cupit.currentUser.toString()).then((value) {
+                              child: const Text(
+                                "gallery",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20),
+                              ),
+                              onPressed: () {
+                                cupit
+                                    .pickImage(ImageSource.gallery)
+                                    .whenComplete(() async {
+                                  x = true;
+                                  await FirebaseFirestore.instance
+                                      .collection('user')
+                                      .doc(cupit.currentUser)
+                                      .collection('UserInfo')
+                                      .doc(cupit.currentUser)
+                                      .update({'photo': cupit.link}).then(
+                                          (value) {
+                                    cupit
+                                        .getUserInfo(
+                                            cupit.currentUser.toString())
+                                        .then((value) {
                                       Navigator.pop(context);
-                                      x= false;
-
+                                      x = false;
                                     });
-                                 });
+                                  });
 
                                   print(cupit.link);
-
-                                }).catchError((e){
+                                }).catchError((e) {
                                   print("FuckWorld");
-
                                 });
-                            }
-
-
-                          ),
+                              }),
                           DialogButton(
                               child: const Text(
                                 "camera",
@@ -102,34 +102,30 @@ bool x =false;
                                     color: Colors.white, fontSize: 20),
                               ),
                               onPressed: () {
-                                cupit.pickImage(ImageSource.camera).whenComplete(() async{
-                                  x= true;
+                                cupit
+                                    .pickImage(ImageSource.camera)
+                                    .whenComplete(() async {
+                                  x = true;
 
-                                  await FirebaseFirestore.instance.collection('user').doc(cupit.currentUser).
-                                  collection('UserInfo').doc(cupit.currentUser).update({
-                                    'photo' :cupit.link
-                                  }).then((value) {
-                                    cupit.getUserInfo(cupit.currentUser.toString()).then((value){
+                                  await FirebaseFirestore.instance
+                                      .collection('user')
+                                      .doc(cupit.currentUser)
+                                      .collection('UserInfo')
+                                      .doc(cupit.currentUser)
+                                      .update({'photo': cupit.link}).then(
+                                          (value) {
+                                    cupit
+                                        .getUserInfo(
+                                            cupit.currentUser.toString())
+                                        .then((value) {
                                       Navigator.pop(context);
-
-                                    }
-                                    );
-                                    x= false;
-
+                                    });
+                                    x = false;
                                   });
 
                                   print(cupit.link);
-
-                                }).catchError((e){
-
-                                });
-                              }
-
-
-                          ),
-
-
-
+                                }).catchError((e) {});
+                              }),
                         ],
                       ).show();
                     },
