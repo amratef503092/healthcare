@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../constant/constants.dart';
 import '../../shared/bloc/AppCubit.dart';
@@ -37,7 +38,6 @@ class _EditInfoState extends State<EditInfo> {
                       child: Container(
                         width: double.infinity,
 
-                        height: height,
                         decoration: const BoxDecoration(
                           image: DecorationImage(
                             image: AssetImage(AssetsManager.backGroundAdmin),
@@ -165,7 +165,26 @@ class _EditInfoState extends State<EditInfo> {
                                           if(formKey.currentState!.validate()){
                                             // cubit.getDoctorQualifications().then((value) => Navigator.push(context, MaterialPageRoute(builder: (context)=>
                                             //     AddDoctorScreen())));
-                                            cubit.updateDate();
+                                            cubit.updateDate().then((value) {
+                                              Alert(
+                                                context: context,
+                                                type: AlertType.success,
+                                                title: "Update complete",
+                                                buttons: [
+                                                  DialogButton(
+                                                    child: const Text(
+                                                      "back",
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 20),
+                                                    ),
+                                                    onPressed: () {
+                                              Navigator.pop(context);
+                                              })
+                                                ],
+                                              ).show();
+
+                                            });
                                           }
 
                                         },

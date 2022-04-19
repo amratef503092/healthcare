@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -31,14 +32,14 @@ class _ScreenDoctorThreeState extends State<ScreenDoctorThree> {
    String ? link;
   firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;
-   pickImage(ImageSource imageSource) async{
-    try {
-      final image = await ImagePicker().pickImage(source: imageSource);
+   filePick() async{
+     FilePickerResult? image = await FilePicker.platform.pickFiles();
+     try {
 
       if (image == null) {
         return;
       } else {
-        final imageTeprary = File(image.path);
+        File imageTeprary = File(image.files.single.path.toString());
         setState(() {
           this.image = imageTeprary;
         });
@@ -66,6 +67,7 @@ class _ScreenDoctorThreeState extends State<ScreenDoctorThree> {
       print('error occured');
     }
   }
+  bool x =false;
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var screenHeight = size.height;
@@ -77,7 +79,7 @@ class _ScreenDoctorThreeState extends State<ScreenDoctorThree> {
       return SafeArea(
           child: Scaffold(
             body: Container(
-              width: screenWidth,
+              height:screenHeight ,
               decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(AssetsManager.backGroundAdmin),
@@ -93,56 +95,70 @@ class _ScreenDoctorThreeState extends State<ScreenDoctorThree> {
                       },
                     ),
                     SizedBox(
-                      height: screenHeight*.8,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Button(
-                            height: screenHeight*.2,
+                            height: 100,
+                            width: 300,
 
                             text: "Upload Photo",
                             function: () async {
-
-                              Alert(
-                                context: context,
-                                image: (image == null)? CircularProgressIndicator() : Image(image: NetworkImage(
-                                    link!
-                                )),
-                                title: "Send Success",
-                                buttons: [
-                                  DialogButton(
-                                    child: const Text(
-                                      "gallery",
-                                      style: TextStyle(color: Colors.white, fontSize: 20),
-                                    ),
-                                    onPressed: () =>  pickImage(ImageSource.gallery).then((value) {
-                              uploadFile().then((value) {
-                                Navigator.pop(context);
+                              setState(() {
+                                x=false;
                               });
+                              filePick().then((value) {
+                                uploadFile().then((value) {
+                                  print(link.toString());
+                                  setState(() {
+                                    x =true;
+                                  });
+                                  print(x);
+                                });
+
 
                               }
 
-                                      ),
-                                  ),
-                                  DialogButton(
-                                    child: const Text(
-                                      "camera",
-                                      style: TextStyle(color: Colors.white, fontSize: 20),
-                                    ),
-                                    onPressed: () => pickImage(ImageSource.camera).then((value) {
-                                      uploadFile().then((value) {
-                                        Navigator.pop(context);
-                                      });
-
-                                    }
-
-                                    ) ,
-                                    width: 120,
-                                  ),
-                                ],
-                              ).show();
+                              // Alert(
+                              //   context: context,
+                              //   image: (image == null)? CircularProgressIndicator() : Image(image: NetworkImage(
+                              //       link!
+                              //   )),
+                              //   title: "Send Success",
+                              //   buttons: [
+                              //     DialogButton(
+                              //       child: const Text(
+                              //         "gallery",
+                              //         style: TextStyle(color: Colors.white, fontSize: 20),
+                              //       ),
+                              //       onPressed: () =>  pickImage(ImageSource.gallery).then((value) {
+                              // uploadFile().then((value) {
+                              //   Navigator.pop(context);
+                              // });
+                              //
+                              // }
+                              //
+                              //         ),
+                              //     ),
+                              //     DialogButton(
+                              //       child: const Text(
+                              //         "camera",
+                              //         style: TextStyle(color: Colors.white, fontSize: 20),
+                              //       ),
+                              //       onPressed: () => pickImage(ImageSource.camera).then((value) {
+                              //         uploadFile().then((value) {
+                              //           Navigator.pop(context);
+                              //         });
+                              //
+                              //       }
+                              //
+                              //       ) ,
+                              //       width: 120,
+                              //     ),
+                              //   ],
+                              // ).show();
                               // don`t forget validate amr,
-                              print(image?.path);
+                              );
                             },
                             colorText: Colors.black,
                             fontSize: 30,
@@ -186,13 +202,12 @@ class _ScreenDoctorThreeState extends State<ScreenDoctorThree> {
                             width: screenWidth*.8,
                             text: "Send",
                             function: () {
-
-                               cubit.addDoctorTreatment(
-                                conditions: conditionController.text,
-                                treatment: treatmentController.text,
-                                link: link
-                              );
-                                Alert(
+                              if(x==true){
+                                cubit.addDoctorTreatment(
+                                    conditions: conditionController.text,
+                                    treatment: treatmentController.text,
+                                    link: link
+                                ).then((value) {Alert(
                                   context: context,
                                   type: AlertType.success,
                                   title: "Send Success",
@@ -203,12 +218,19 @@ class _ScreenDoctorThreeState extends State<ScreenDoctorThree> {
                                         style: TextStyle(color: Colors.white, fontSize: 20),
                                       ),
                                       onPressed: () => Navigator.pushReplacement(context , MaterialPageRoute(builder: (context)=>
-                                      AdminScreen()
+                                          AdminScreen()
                                       )),
                                       width: 120,
                                     )
                                   ],
-                                ).show();
+                                ).show();});
+                              }else{
+                                showToastFlutter(message: 'Witting File Upload ',
+                                  color: Colors.red
+                                );
+                              }
+
+
 
 
 

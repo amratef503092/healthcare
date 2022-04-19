@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:age_calculator/age_calculator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -76,6 +77,24 @@ class AppCubit extends Cubit<AppStates> {
         String imageName = basename(image.path);
         var uploadImage = FirebaseStorage.instance.ref('user').child(currentUser!).child('profileImage').child(imageName);
         await uploadImage.putFile(fileImage);
+        link = await uploadImage.getDownloadURL();
+        print("Link");
+      }
+    } on PlatformException catch (e) {
+      print('$e');
+    }
+  }
+  Future FileUpload() async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+      if (image == null) {
+        return;
+      } else {
+        File file = File(result!.files.single.path.toString());
+        String imageName = basename(result.files.single.path.toString());
+        var uploadImage = FirebaseStorage.instance.ref();
+        await uploadImage.putFile(file);
         link = await uploadImage.getDownloadURL();
         print("Link");
       }
@@ -352,7 +371,7 @@ class AppCubit extends Cubit<AppStates> {
 
   }
 
-  void addDoctorTreatment({
+  Future addDoctorTreatment({
   required treatment,
     required conditions,
     required link

@@ -35,7 +35,6 @@ class _HomeScreenSearchState extends State<HomeScreenSearch> {
                       child: Container(
                         width: double.infinity,
 
-                        height: height,
             decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(AssetsManager.backGroundAdmin),

@@ -6,6 +6,7 @@ import 'package:helthcare/shared/bloc/AppStates.dart';
 
 import '../../constant/constants.dart';
 import '../resources/assets/assetclass.dart';
+import '../resources/value_manager.dart';
 import 'midecalHistoryScreenTwo.dart';
 import 'package:intl/intl.dart';
 
@@ -73,6 +74,7 @@ class Medical extends StatelessWidget {
                                        minFontSize: 14,
                                        stepGranularity: 0.1,
                                      ),
+
 
 
 

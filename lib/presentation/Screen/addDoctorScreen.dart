@@ -117,7 +117,7 @@ class _AddDoctorScreenState extends State<AddDoctorScreen> {
 
                             onChanged: (value) async {
                               setState(()  {
-                                selectedValue = value as String;
+                                selectedValue = value.toString();
                               });
 
 

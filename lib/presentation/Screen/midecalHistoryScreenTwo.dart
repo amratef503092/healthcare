@@ -1,11 +1,17 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helthcare/presentation/Screen/Medical_History_Screen_Three.dart';
 import 'package:helthcare/presentation/Screen/pdf.dart';
 import 'package:helthcare/shared/bloc/AppCubit.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:file_picker/file_picker.dart';
 
 import '../../constant/constants.dart';
 import '../../shared/bloc/AppStates.dart';
@@ -86,7 +92,8 @@ class _MedicalHistoryScreenTwoState extends State<MedicalHistoryScreenTwo> {
                 ),
 
                 MaterialButton(onPressed: () async {
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Pdf()));
+
+                  openFile(url: cubit.medicalHistoryModel[widget.index!].link.toString());
                 } ,
                   height: 56,
                   minWidth: screenWidth*.8,
@@ -113,4 +120,72 @@ class _MedicalHistoryScreenTwoState extends State<MedicalHistoryScreenTwo> {
       ));
     },);
   }
+  String getFileName(String url) {
+    RegExp regExp = new RegExp(r'.+(\/|%2F)(.+)\?.+');
+    //This Regex won't work if you remove ?alt...token
+    var matches = regExp.allMatches(url);
+
+    var match = matches.elementAt(0);
+    print("${Uri.decodeFull(match.group(2)!)}");
+    return Uri.decodeFull(match.group(2)!);
+  }
+  Future openFile({required String url }) async{
+    print(url);
+    String fileName=  getFileName(url);
+    final file = await downloadFile(url,fileName);
+    // final x = await pickFile();
+    if(file==null){
+      return;
+    }else{
+      print('path : ${file.path}');
+      OpenFile.open(file.path);
+    }
+
+
+  }
+  Future<File?> pickFile() async{
+    final result = await FilePicker.platform.pickFiles();
+    return File(result!.files.first.path.toString());
+}
+  Future<File?>downloadFile(String url ,String name)async{
+    final appStorage = await getApplicationDocumentsDirectory();
+    File file = File('${appStorage.path}/$name');
+    try{
+      final response = await Dio().get(
+        url,
+        options: Options(
+          responseType: ResponseType.bytes,
+          followRedirects: false,
+          receiveTimeout: 0
+        )
+      );
+      final ref = file.openSync(mode: FileMode.write);
+      ref.writeFromSync(response.data);
+      await ref.close();
+      return file;
+    }catch(e){
+      print(e.toString());
+    }
+
+
+
+  }
+  // Future<void> downloadFileExample() async {
+  //   //First you get the documents folder location on the device...
+  //   Directory appDocDir = await getApplicationDocumentsDirectory();
+  //   //Here you'll specify the file it should be saved as
+  //   File downloadToFile = File('${appDocDir.path}/downloaded-pdf.pdf');
+  //   //Here you'll specify the file it should download from Cloud Storage
+  //   String fileToDownload = 'uploads/uploaded-pdf.pdf';
+  //
+  //   //Now you can try to download the specified file, and write it to the downloadToFile.
+  //   try {
+  //     await FirebaseStorage.instance
+  //         .ref(fileToDownload)
+  //         .writeToFile(downloadToFile);
+  //   } on firebase_core.FirebaseException catch (e) {
+  //     // e.g, e.code == 'canceled'
+  //     print('Download error: $e');
+  //   }
+  // }
 }
