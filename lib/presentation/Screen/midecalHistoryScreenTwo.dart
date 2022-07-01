@@ -4,13 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:helthcare/presentation/Screen/Medical_History_Screen_Three.dart';
-import 'package:helthcare/presentation/Screen/pdf.dart';
 import 'package:helthcare/shared/bloc/AppCubit.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+
 import 'package:file_picker/file_picker.dart';
 
 import '../../constant/constants.dart';

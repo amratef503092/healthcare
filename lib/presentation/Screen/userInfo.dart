@@ -7,7 +7,6 @@ import 'package:helthcare/shared/bloc/AppStates.dart';
 
 import '../../constant/constants.dart';
 import '../resources/assets/assetclass.dart';
-import 'package:age_calculator/age_calculator.dart';
 
 class UserInfo extends StatelessWidget {
   UserInfo({Key? key}) : super(key: key);
@@ -20,7 +19,6 @@ class UserInfo extends StatelessWidget {
     return BlocConsumer<AppCubit ,AppStates>(listener: (context, state) {
 
     },  builder:(context ,state){
-        DateDuration duration;
 
       var cubit = AppCubit.get(context);
 

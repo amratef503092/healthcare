@@ -142,7 +142,6 @@ class _AddDoctorScreen2State extends State<AddDoctorScreen2> {
                         );
                       }
 
-
                     },
                     colorText: Colors.black,
                     fontSize: 30,

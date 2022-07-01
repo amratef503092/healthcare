@@ -280,6 +280,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
                           if (value == null) {
                             return 'Please select gender.';
                           }
+                          return null;
                         },
                         onChanged: (value) {
                           setState(() {

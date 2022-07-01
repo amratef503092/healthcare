@@ -1,11 +1,11 @@
 
 import 'dart:io';
 
-import 'package:age_calculator/age_calculator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -68,17 +68,21 @@ class AppCubit extends Cubit<AppStates> {
   }
   Future pickImage(ImageSource imageSource) async {
     try {
-      final image = await ImagePicker().pickImage(source: imageSource);
+      final image = await ImagePicker().
+      pickImage(source: imageSource);
 
       if (image == null) {
         return;
       } else {
         final fileImage = File(image.path);
         String imageName = basename(image.path);
-        var uploadImage = FirebaseStorage.instance.ref('user').child(currentUser!).child('profileImage').child(imageName);
+        var uploadImage = FirebaseStorage.instance.ref('user')
+            .child(currentUser!).child('profileImage').child(imageName);
         await uploadImage.putFile(fileImage);
         link = await uploadImage.getDownloadURL();
-        print("Link");
+        if (kDebugMode) {
+          print("Link");
+        }
       }
     } on PlatformException catch (e) {
       print('$e');
@@ -88,15 +92,17 @@ class AppCubit extends Cubit<AppStates> {
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles();
 
-      if (image == null) {
+      if (result == null) {
         return;
       } else {
-        File file = File(result!.files.single.path.toString());
+        File file = File(result.files.single.path.toString());
         String imageName = basename(result.files.single.path.toString());
-        var uploadImage = FirebaseStorage.instance.ref();
-        await uploadImage.putFile(file);
-        link = await uploadImage.getDownloadURL();
-        print("Link");
+        var uploadIFile = FirebaseStorage.instance.ref();
+        await uploadIFile.putFile(file);
+        link = await uploadIFile.getDownloadURL();
+        if (kDebugMode) {
+          print("Link");
+        }
       }
     } on PlatformException catch (e) {
       print('$e');
@@ -133,12 +139,13 @@ class AppCubit extends Cubit<AppStates> {
         gender: gender,
         hospitalInfo: 'Dar Al Hekma Hospital');
     var doc =
-        await FirebaseFirestore.instance.collection('user').doc(userName).get();
+        await FirebaseFirestore.instance.
+        collection('user').doc(userName).get();
 
     if (!doc.exists) {
 
       String ? nfc ;
-      bool wirteNFC = false;
+      bool wireNFC = false;
       Alert(
         context: context,
         type: AlertType.info,
@@ -149,15 +156,16 @@ class AppCubit extends Cubit<AppStates> {
               "Write ID",
               style: TextStyle(color: Colors.white, fontSize: 10),
             ),
-            onPressed: () async{
+            onPressed: () async
+            {
               var tag = await FlutterNfcKit.poll(
-                  timeout: Duration(seconds: 10),
+                  timeout: const Duration(seconds: 10),
                   iosMultipleTagMessage: "Multiple tags found!",
                   iosAlertMessage: "Scan your tag");
               if (tag.ndefWritable!) {
                 await FlutterNfcKit.writeNDEFRecords(
                     [ ndef.TextRecord(text: userName, language: 'en')]);
-                wirteNFC = true;
+                wireNFC = true;
 
               }
             },
@@ -168,10 +176,10 @@ class AppCubit extends Cubit<AppStates> {
     style: TextStyle(color: Colors.white, fontSize: 10),
     ),
     onPressed: () async{
-      if(wirteNFC){
+      if(wireNFC){
         var tag = await FlutterNfcKit.poll(timeout: Duration(seconds: 10));
 
-        if (tag.ndefAvailable) {
+        if (tag.ndefAvailable!) {
           for (var record in await FlutterNfcKit.readNDEFRecords(cached: false)) {
             print(record.toString());
             nfc = record.toString().substring(105, record.toString().length);
@@ -322,7 +330,8 @@ class AppCubit extends Cubit<AppStates> {
       if (username == password && userModel?.username == userModel?.password) {
         currentUser = username;
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => AdminScreen()));
+            context, MaterialPageRoute(builder: (context) =>
+            const AdminScreen()));
         showToastFlutter(
           color: Colors.blue,
           message: TextManager.welcome,

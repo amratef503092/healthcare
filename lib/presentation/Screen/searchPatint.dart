@@ -55,7 +55,7 @@ class _SearchPatientState extends State<SearchPatient> {
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
                             controller: searchController,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 30,
                                 color: Colors.white
                             ),
@@ -124,7 +124,7 @@ class _SearchPatientState extends State<SearchPatient> {
 
                           var tag = await FlutterNfcKit.poll(timeout: Duration(seconds: 10));
 
-                          if (tag.ndefAvailable) {
+                          if (tag.ndefAvailable!) {
                             for (var record in await FlutterNfcKit.readNDEFRecords(cached: false)) {
                           print(record.toString());
                           setState(() {

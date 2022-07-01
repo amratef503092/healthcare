@@ -1,14 +1,14 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:helthcare/presentation/resources/text_manager.dart';
 import 'package:helthcare/presentation/resources/value_manager.dart';
 import 'package:helthcare/shared/bloc/AppCubit.dart';
 import 'package:helthcare/shared/bloc/AppStates.dart';
-import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 
 import '../../constant/constants.dart';
 import '../resources/assets/assetclass.dart';
-import 'package:age_calculator/age_calculator.dart';
+
 
 class UserInfoUsingNFC extends StatelessWidget {
   UserInfoUsingNFC({Key? key}) : super(key: key);

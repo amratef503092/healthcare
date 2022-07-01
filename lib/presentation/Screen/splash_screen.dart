@@ -38,7 +38,7 @@ class SplashScreen extends StatelessWidget {
                       SizedBox(
                         height: constraints.maxHeight*.1,
                       ),
-                      AutoSizeText(TextManager.textSplashScreen , style: TextStyle(
+                      AutoSizeText(TextManager.textSplashScreen , style: const TextStyle(
                         color: Color(0xff5B8DAA),
                         fontSize: 39,
 

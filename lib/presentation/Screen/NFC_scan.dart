@@ -8,7 +8,6 @@ import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 import 'package:helthcare/shared/bloc/AppCubit.dart';
 import 'package:ndef/ndef.dart' as ndef;
-import 'package:nfc_manager/nfc_manager.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../shared/bloc/AppStates.dart';
@@ -101,8 +100,7 @@ class NFCScanState extends State<NFCScan> {
 
   Future<void> _tagRead() async {
     var tag = await FlutterNfcKit.poll(timeout: Duration(seconds: 10));
-
-    if (tag.ndefAvailable) {
+    if (tag.ndefAvailable!) {
       for (var record in await FlutterNfcKit.readNDEFRecords(cached: false)) {
         print(record.toString());
         setState(() {
